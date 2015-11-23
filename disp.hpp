@@ -51,11 +51,19 @@
 #include <cstring>
 #include <sstream>
 
+#include <fstream>
+
 #include <ncurses.h>
 #include <mutex>
 
+using namespace std;
+
 class Disp
 {
+
+int file_counter=1, row_counter=0;
+fstream fs;
+string buffer;
 
 public:
 
@@ -188,9 +196,35 @@ public:
 
   void log ( std::string msg )
   {
+
     ncurses_mutex.lock();
     ui();
     msg =  msg + "\n";
+    
+    std:stringstream ss;
+if(file_counter<4){
+    if(row_counter<10)
+    {
+	if(row_counter==0)
+	{
+	    ss.str("");                   
+	    ss.clear();
+
+	    ss << file_counter;
+            buffer = ss.str() + ".txt";
+
+            fs.open(buffer.c_str(), fstream::out);
+        }
+	fs << msg;
+ 	row_counter++;
+    }
+    else if(row_counter==10)
+    {
+    	fs.close();
+	file_counter++;
+	row_counter=0;
+    }
+}
     waddstr ( log_iw, msg.c_str() );
     box ( log_w, 0, 0 );
     mvwprintw ( log_w, 0, 1, " Samu's answers " );
