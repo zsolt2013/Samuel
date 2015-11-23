@@ -56,6 +56,7 @@
 
 class Disp
 {
+
 public:
 
   Disp()
@@ -76,42 +77,34 @@ public:
     my = 0;
 
     vi_w = newwin ( 10+2, max_x, 0, 0 );
-    log_w = newwin ( max_y- ( 10+2 ) - 3, max_x, 10+2, 0 );
-    log_iw = newwin ( max_y- ( 10+2 ) - 3 -2, max_x-2, 10+2+1, 1 );
+    log_w = newwin ( max_y- ( 10+2 ) - 3, max_x/2, 10+2, 0 );
+    log_iw = newwin ( max_y- ( 10+2 ) - 3 -1, max_x/2, 10+2+1, 0 );
     shell_w = newwin ( 3, max_x, 10+2+max_y- ( 10+2 ) - 3, 0 );
 
+    slow_log_w = newwin ( max_y- ( 10+2 ) - 3, max_x/2, 10+2, max_x/2 );
+    slow_log_iw = newwin ( max_y- ( 10+2 ) - 3 -1, max_x/2, 10+2+1, max_x/2 );
+
     start_color();
-    /*
-    init_pair ( 1,COLOR_WHITE, COLOR_BLUE );
-    init_pair ( 2, COLOR_WHITE, COLOR_YELLOW );
-    init_pair ( 3, COLOR_YELLOW, COLOR_BLUE );
-    */
-    /*
-    init_pair ( 1, COLOR_BLACK, COLOR_WHITE );
-    init_pair ( 2, COLOR_WHITE, COLOR_YELLOW );
-    init_pair ( 3, COLOR_WHITE, COLOR_RED );
-    */
+    
     init_pair ( 1, COLOR_BLACK, COLOR_WHITE );
     init_pair ( 2, COLOR_WHITE, COLOR_MAGENTA );
     init_pair ( 3, COLOR_WHITE, COLOR_RED );
-    
-    init_pair ( 4, COLOR_BLACK, COLOR_CYAN );
-    init_pair ( 5, COLOR_BLACK, COLOR_GREEN );
-    init_pair ( 6, COLOR_BLUE, COLOR_YELLOW );
-    init_pair ( 7, COLOR_BLACK, COLOR_MAGENTA );
-    init_pair ( 8, COLOR_CYAN, COLOR_RED );
-    init_pair ( 9, COLOR_WHITE, COLOR_BLACK );
-    init_pair ( 10, COLOR_MAGENTA, COLOR_BLACK );
-    init_pair ( 11, COLOR_GREEN, COLOR_MAGENTA );
+    init_pair ( 4, COLOR_WHITE, COLOR_CYAN );
+    init_pair ( 5, COLOR_WHITE, COLOR_GREEN );
 
     wbkgd ( vi_w, COLOR_PAIR ( 1 ) );
-    wbkgd ( log_w, COLOR_PAIR ( 2 ) );
+    wbkgd ( log_w, COLOR_PAIR ( 3 ) );
     wbkgd ( log_iw, COLOR_PAIR ( 2 ) );
     wbkgd ( shell_w, COLOR_PAIR ( 1 ) );
+
+    wbkgd ( slow_log_w, COLOR_PAIR ( 4 ) );
+    wbkgd ( slow_log_iw, COLOR_PAIR ( 5 ) );
 
     nodelay ( shell_w, TRUE );
     keypad ( shell_w, TRUE );
     scrollok ( log_iw, TRUE );
+
+    scrollok ( slow_log_iw, TRUE );
 
     ui( );
 
@@ -123,6 +116,9 @@ public:
     delwin ( log_w );
     delwin ( log_iw );
     delwin ( shell_w );
+
+    delwin ( slow_log_w );
+    delwin ( slow_log_iw );
     endwin();
   }
 
@@ -158,7 +154,6 @@ public:
   {
     if ( ncurses_mutex.try_lock() )
       {
-	
         ui();
         werase ( vi_w );
 
@@ -255,13 +250,21 @@ private:
         mvwin ( vi_w, 0, 0 );
         werase ( vi_w );
 
-        wresize ( log_w, my- ( 10+2 ) - 3, mx );
+        wresize ( log_w, my- ( 10+2 )-3, mx/2);
         mvwin ( log_w, 10+2, 0 );
         werase ( log_w );
 
-        wresize ( log_iw, my- ( 10+2 ) - 3-2, mx-2 );
-        mvwin ( log_iw, 10+2+1, 1 );
+        wresize ( log_iw, my- ( 10+2 )-3-1, mx/2 );
+        mvwin ( log_iw, 10+2+1, 0 );
         werase ( log_iw );
+	
+       	wresize ( slow_log_w, my- ( 10+2 ) - 3, mx/2 );
+	mvwin ( slow_log_w, 10+2, mx/2);
+	werase ( slow_log_w);
+
+    	wresize ( slow_log_iw, my- ( 10+2 ) - 3 -1, mx/2 );
+	mvwin ( slow_log_iw, 10+2+1, mx/2);
+	werase ( slow_log_iw);
 
         wresize ( shell_w, 3, mx );
         mvwin ( shell_w, 10+2+my- ( 10+2 ) - 3, 0 );
@@ -271,7 +274,10 @@ private:
         mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
 
         box ( log_w, 0, 0 );
-        mvwprintw ( log_w, 0, 1, " Samu's answers " );
+        mvwprintw ( log_w, 0, mx/4 - 8, "Samu's answers" );
+
+        box ( slow_log_w, 0, 0 );
+        mvwprintw ( slow_log_w, 0, mx/4 -10, "Samu's slow answers" );
 
         box ( shell_w, 0, 0 );
         mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
@@ -280,6 +286,10 @@ private:
         wrefresh ( vi_w );
         wrefresh ( log_w );
         wrefresh ( log_iw );
+
+        wrefresh ( slow_log_w );
+        wrefresh ( slow_log_iw );
+
         wrefresh ( shell_w );
       }
   }
@@ -289,6 +299,8 @@ private:
   WINDOW *vi_w;
   WINDOW *log_w, *log_iw;
   WINDOW *shell_w;
+
+  WINDOW *slow_log_w, *slow_log_iw;
   int mx {0}, my {0};
 };
 
