@@ -61,9 +61,11 @@ using namespace std;
 class Disp
 {
 
-int file_counter=1, row_counter=0;
-fstream fs;
-string buffer;
+int speed=0;
+int out_counter=1, out_row_counter=0;
+int in_counter=1, in_row_counter=0;
+fstream fs,read;
+string buffer,reader,r_content;
 
 public:
 
@@ -85,9 +87,13 @@ public:
     my = 0;
 
     vi_w = newwin ( 10+2, max_x, 0, 0 );
+    vi_iw = newwin ( 10+2-1, max_x, 1, 0 );
+
     log_w = newwin ( max_y- ( 10+2 ) - 3, max_x/2, 10+2, 0 );
     log_iw = newwin ( max_y- ( 10+2 ) - 3 -1, max_x/2, 10+2+1, 0 );
+
     shell_w = newwin ( 3, max_x, 10+2+max_y- ( 10+2 ) - 3, 0 );
+    shell_iw = newwin ( 3-1, max_x, 10+2+max_y- ( 10+2 ) - 3-1, 0 );
 
     slow_log_w = newwin ( max_y- ( 10+2 ) - 3, max_x/2, 10+2, max_x/2 );
     slow_log_iw = newwin ( max_y- ( 10+2 ) - 3 -1, max_x/2, 10+2+1, max_x/2 );
@@ -95,21 +101,25 @@ public:
     start_color();
     
     init_pair ( 1, COLOR_BLACK, COLOR_WHITE );
-    init_pair ( 2, COLOR_WHITE, COLOR_MAGENTA );
-    init_pair ( 3, COLOR_WHITE, COLOR_RED );
-    init_pair ( 4, COLOR_WHITE, COLOR_CYAN );
-    init_pair ( 5, COLOR_WHITE, COLOR_GREEN );
+    init_pair ( 2, COLOR_WHITE, COLOR_RED );
+    init_pair ( 3, COLOR_WHITE, COLOR_BLUE );
+    init_pair ( 4, COLOR_WHITE, COLOR_GREEN );
+    init_pair ( 5, COLOR_WHITE, COLOR_CYAN );
 
-    wbkgd ( vi_w, COLOR_PAIR ( 1 ) );
+    wbkgd ( vi_w, COLOR_PAIR ( 2 ) );
+    wbkgd ( vi_iw, COLOR_PAIR ( 1 ));
+
     wbkgd ( log_w, COLOR_PAIR ( 3 ) );
-    wbkgd ( log_iw, COLOR_PAIR ( 2 ) );
-    wbkgd ( shell_w, COLOR_PAIR ( 1 ) );
+    wbkgd ( log_iw, COLOR_PAIR ( 1 ) );
+
+    wbkgd ( shell_w, COLOR_PAIR ( 5 ) );
+    wbkgd ( shell_iw, COLOR_PAIR ( 1 ) );
 
     wbkgd ( slow_log_w, COLOR_PAIR ( 4 ) );
-    wbkgd ( slow_log_iw, COLOR_PAIR ( 5 ) );
+    wbkgd ( slow_log_iw, COLOR_PAIR ( 1 ) );
 
-    nodelay ( shell_w, TRUE );
-    keypad ( shell_w, TRUE );
+    nodelay ( shell_iw, TRUE );
+    keypad ( shell_iw, TRUE );
     scrollok ( log_iw, TRUE );
 
     scrollok ( slow_log_iw, TRUE );
@@ -121,9 +131,13 @@ public:
   ~Disp()
   {
     delwin ( vi_w );
+    delwin ( vi_iw );
+
     delwin ( log_w );
     delwin ( log_iw );
+
     delwin ( shell_w );
+    delwin ( shell_iw );
 
     delwin ( slow_log_w );
     delwin ( slow_log_iw );
@@ -134,12 +148,11 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    werase ( shell_w );
-    box ( shell_w, 0, 0 );
+    werase ( shell_iw );
     mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
-    mvwprintw ( shell_w, 1, 1, "Norbi> " );
-    waddstr ( shell_w, msg.c_str() );
-    wrefresh ( shell_w );
+    mvwprintw ( shell_iw, 0, 1, "Norbi> " );
+    waddstr ( shell_iw, msg.c_str() );
+    wrefresh ( shell_iw );
     ncurses_mutex.unlock();
   }
 
@@ -148,12 +161,12 @@ public:
     if ( ncurses_mutex.try_lock() )
       {
         ui();
-        werase ( vi_w );
-        wmove ( vi_w, 1, 0 );
-        waddstr ( vi_w, msg.c_str() );
-        box ( vi_w, 0, 0 );
-        mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
-        wrefresh ( vi_w );
+        werase ( vi_iw );
+        wmove ( vi_iw, 0, 0 );
+        waddstr ( vi_iw, msg.c_str() );
+        
+        mvwprintw ( vi_w, 0, 0, " Amminadab's visual imagery " );
+        wrefresh ( vi_iw );
         ncurses_mutex.unlock();
       }
   }
@@ -163,11 +176,11 @@ public:
     if ( ncurses_mutex.try_lock() )
       {
         ui();
-        werase ( vi_w );
+        werase ( vi_iw );
 
         for ( int i {0}; i<10; ++i )
           {
-            wmove ( vi_w, i+1, 1 );
+            wmove ( vi_iw, i+1, 1 );
             for ( int j {0}; j<80; ++j )
               {
                 char c = vi_console[i*80+j];
@@ -176,66 +189,131 @@ public:
                   {
                     if ( isdigit ( c ) )
                       {
-                        wattron ( vi_w,COLOR_PAIR ( c-'0'+2 ) );
-                        waddch ( vi_w, c );
-                        wattroff ( vi_w,COLOR_PAIR ( c-'0'+2 ) );
+                        wattron ( vi_iw,COLOR_PAIR ( c-'0'+2 ) );
+                        waddch ( vi_iw, c );
+                        wattroff ( vi_iw,COLOR_PAIR ( c-'0'+2 ) );
                       }
                     else
-                      waddch ( vi_w, c );
+                      waddch ( vi_iw, c );
 
                   }
               }
           }
 
-        box ( vi_w, 0, 0 );
-        mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
-        wrefresh ( vi_w );
+        mvwprintw ( vi_w, 0, 0, " Amminadab's visual imagery " );
+        wrefresh ( vi_iw );
         ncurses_mutex.unlock();
       }
   }
 
   void log ( std::string msg )
   {
-
     ncurses_mutex.lock();
     ui();
+
     msg =  msg + "\n";
     
     std:stringstream ss;
-if(file_counter<4){
-    if(row_counter<10)
-    {
-	if(row_counter==0)
-	{
-	    ss.str("");                   
+  
+    if(msg.compare("Saving Samu...\n")==0)  
+    {	
+        for(speed=0;speed<=out_counter;speed++)
+ 	{
+            ss.str("");                   
 	    ss.clear();
 
-	    ss << file_counter;
+	    ss << speed;
             buffer = ss.str() + ".txt";
 
-            fs.open(buffer.c_str(), fstream::out);
-        }
-	fs << msg;
- 	row_counter++;
+            remove(buffer.c_str());
+	}
     }
-    else if(row_counter==10)
-    {
-    	fs.close();
-	file_counter++;
-	row_counter=0;
-    }
-}
-    waddstr ( log_iw, msg.c_str() );
-    box ( log_w, 0, 0 );
-    mvwprintw ( log_w, 0, 1, " Samu's answers " );
+    else
+    {   
+    	if(out_row_counter<1000)
+    	{
+	    if(out_row_counter==0)
+	    {
+	    	ss.str("");                   
+	    	ss.clear();
+
+	    	ss << out_counter;
+            	buffer = ss.str() + ".txt";
+
+            	fs.open(buffer.c_str(), fstream::out);
+            }
+	    
+	    fs << msg;
+ 	    out_row_counter++;
+    	}
+    	else if(out_row_counter==1000)
+    	{
+    	    fs.close();
+	    out_counter++;
+	    out_row_counter=0;
+    	}
+
+    	if(out_counter>1)
+    	{
+	    if(in_row_counter<1000)
+	    {
+	    	if(in_row_counter==0)
+	    	{
+	    	    ss.str("");
+	    	    ss.clear();
+	
+	    	    ss << in_counter;
+	    	    reader = ss.str() + ".txt";
+	    
+	    	    read.open(reader.c_str(), ios_base::in);
+		
+	    	    in_row_counter++;
+	      	}
+	    	if(speed==200)
+	    	{
+		    getline(read,r_content);		
+
+	    	    in_row_counter++;
+		    speed=0;
+		
+		    r_content=r_content + "\n"; 
+
+		    waddstr ( slow_log_iw, r_content.c_str());
+    		    mvwprintw ( slow_log_w, 0, 0, " Amminadab's slow answers " );
+    		    wrefresh ( slow_log_iw );
+	    	}
+	    	speed++;	
+	    }
+	    else if(in_row_counter==1000)
+	    {
+	     	read.close();
+	    
+	    	ss.str("");
+	    	ss.clear();
+	
+	    	in_counter++;
+
+	    	ss << in_counter-1;
+	    	reader = ss.str() + ".txt";
+	    
+	    	remove(reader.c_str());
+
+	    	in_row_counter=0;
+	    }
+    	}
+    }	
+    
+    waddstr (log_iw, msg.c_str() );
+    mvwprintw ( log_w, 0, 0, " Amminadab's answers " );
     wrefresh ( log_iw );
+
     ncurses_mutex.unlock();
   }
 
   void cg_read()
   {
     int ch;
-    if ( ( ch = wgetch ( shell_w ) ) != ERR )
+    if ( ( ch = wgetch ( shell_iw ) ) != ERR )
       {
 
         if ( ch == '\n' )
@@ -279,10 +357,14 @@ private:
       {
         mx = max_x;
         my = max_y;
-
-        wresize ( vi_w, 10+2, mx );
+	
+	wresize ( vi_w, 10+2, mx );
         mvwin ( vi_w, 0, 0 );
         werase ( vi_w );
+
+        wresize ( vi_iw, 10+2-1, mx );
+        mvwin ( vi_iw, 0+1, 0 );
+        werase ( vi_iw );
 
         wresize ( log_w, my- ( 10+2 )-3, mx/2);
         mvwin ( log_w, 10+2, 0 );
@@ -299,25 +381,27 @@ private:
     	wresize ( slow_log_iw, my- ( 10+2 ) - 3 -1, mx/2 );
 	mvwin ( slow_log_iw, 10+2+1, mx/2);
 	werase ( slow_log_iw);
-
+		
         wresize ( shell_w, 3, mx );
         mvwin ( shell_w, 10+2+my- ( 10+2 ) - 3, 0 );
         werase ( shell_w );
+        
+	wresize ( shell_iw, 3-1, mx );
+        mvwin ( shell_iw, 10+2+my- ( 10+2 ) - 3+1, 0 );
+        werase ( shell_iw );
 
-        box ( vi_w, 0, 0 );
-        mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
+        mvwprintw ( vi_w, 0, 0, " Amminadab's visual imagery " );
 
-        box ( log_w, 0, 0 );
-        mvwprintw ( log_w, 0, mx/4 - 8, "Samu's answers" );
+        mvwprintw ( log_w, 0, 0, "Amminadab's answers" );
 
-        box ( slow_log_w, 0, 0 );
-        mvwprintw ( slow_log_w, 0, mx/4 -10, "Samu's slow answers" );
+        mvwprintw ( slow_log_w, 0, 0, "Amminadab's slow answers" );
 
-        box ( shell_w, 0, 0 );
-        mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
-        mvwprintw ( shell_w, 1, 1, "Norbi> Type your sentence and press [ENTER]" );
+        mvwprintw ( shell_w, 0, 0, " Caregiver shell " );
+        mvwprintw ( shell_iw, 0, 1, "Norbi> Type your sentence and press [ENTER]" );
 
         wrefresh ( vi_w );
+        wrefresh ( vi_iw );
+
         wrefresh ( log_w );
         wrefresh ( log_iw );
 
@@ -325,14 +409,15 @@ private:
         wrefresh ( slow_log_iw );
 
         wrefresh ( shell_w );
+        wrefresh ( shell_iw );
       }
   }
 
   std::mutex ncurses_mutex;
   std::string buf;
-  WINDOW *vi_w;
+  WINDOW *vi_w, *vi_iw;
   WINDOW *log_w, *log_iw;
-  WINDOW *shell_w;
+  WINDOW *shell_w, *shell_iw;
 
   WINDOW *slow_log_w, *slow_log_iw;
   int mx {0}, my {0};
