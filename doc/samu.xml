@@ -1,0 +1,307 @@
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude" version="5.1" xml:lang="hu">
+      <info>
+  <title>Samu Project ( UDPROG ) </title>
+   <subtitle>University of Debrecen</subtitle>
+        <author>
+      <personname>
+        <firstname>Krisztián</firstname>
+        <surname>Ormós</surname>
+      </personname>
+    </author>
+     <author>
+      <personname>
+        <firstname>Zsolt</firstname>
+        <surname>Akai</surname>
+      </personname>
+    </author>
+  </info>
+  <chapter>
+    <info>
+         <title>Samu Documentation</title>
+    </info>
+    <section>
+      <title>Samu</title>
+          <para>
+      One of the purpose of this project is to allow the evaluation and verification of the results of the paper entitled "A disembodied developmental robotic agent called Samu Bátfai", <link xlink:href="http://arxiv.org/abs/1511.02889">http://arxiv.org/abs/1511.02889</link> . This paper presents Q learning with neural networks approximators used by Samu. It is our hope and goal that Samu will be the ancestor of developmental robotics chatter bots that will be able to talk and read in natural language like humans do. See also the page <link xlink:href="http://shrek.unideb.hu/~nbatfai/">Family Robotics - Deep Q-learning with Samu</link>
+       </para>
+    </section>
+    <section>
+      <title>Highlights of Samu</title>
+      <para>
+       1.directly implements the definition of machine consciousness (such as the definitions of conscious and intuitive computer programs) introduced in the paper entitled <link xlink:href="http://arxiv.org/abs/1108.2865">Conscious Machines and Consciousness Oriented Programming</link>Conscious Machines and Consciousness Oriented Programming.
+       </para>
+       <para>
+ corresponds the principles of Developmental Robotics, <link xlink:href="">Some Basic Principles of Developmental Robotics.</link>.
+        </para>
+       <para>
+applies Q learning with neural networks approximators
+       </para>
+       <para>
+
+uses multilayer perceptrons for approximation of the Q function, it is a deep Q learning feature, <link xlink:href="http://shrek.unideb.hu/~nbatfai/">Human-level control through deep reinforcement learning</link>.
+        </para>
+    </section>
+    <section>
+        <title>Usage</title>
+ <para>
+The two use cases shown in the paper entitled "A disembodied developmental robotic agent called Samu Bátfai" are presented in a YouTube video at <link xlink:href="https://youtu.be/qAhxVQk-dvY">https://youtu.be/qAhxVQk-dvY</link>.
+       </para>
+<para>
+ Try another fork of this project in case you want to use Samu as a chat program. The first official fork of Samu, called Isaac, will be public soon. Isaac's repository will be available a <link xlink:href="https://youtu.be/qAhxVQk-dvY">https://github.com/nbatfai/isaac</link>.
+ </para>
+    </section>
+    </chapter>
+  <chapter>
+    <info>
+            <title>Samu's Family Tree</title>
+    </info>
+    <section>
+      <title></title>
+       <para>
+               <link xlink:href="https://github.com/nbatfai/samu">Samu</link> The main purpose of this project is to allow the evaluation and verification of the results of the paper entitled "A disembodied developmental robotic agent called Samu Bátfai", <link xlink:href="http://arxiv.org/abs/1511.02889">http://arxiv.org/abs/1511.02889</link>. It is our hope that Samu will be the ancestor of developmental robotics chatter bots that will be able to chat in natural language like humans do.
+            </para>
+            <para>
+ <link xlink:href="https://github.com/nbatfai/isaac">Isaac</link>  "The son of Samu is Isaac." The project called Isaac is a case study of using deep Q learning with neural networks for predicting the next sentence of a conversation.
+            </para>   
+            <para>
+               <link xlink:href="https://github.com/nbatfai/jacob">Jacob</link>  "The son of Isaac is Jacob." The project called Jacob is an experiment to replace Isaac's (GUI based) visual imagination with a character console.
+            </para>
+            <para>
+               <link xlink:href="https://github.com/nbatfai/judah">Judah</link>  "The son of Jacob is Judah." In the project called Judah we equip Jacob with a text-based user interface.
+            </para>
+            <para>
+                  <link xlink:href="https://github.com/nbatfai/judah">Super-Judah</link>
+            </para>
+            <para>
+             <link xlink:href="https://github.com/nbatfai/judah">Perez</link>"The son of Judah is Perez." The project called Perez allows to perform experiments to test several parameter settings. Here each experiment is implemented as a separate git branch.
+            </para>
+            <para>
+            <link xlink:href="https://github.com/nbatfai/judah">Hezron</link> "The son of Perez is Hezron." The project called Hezron gives the opportunity to experiment with different arrangements of SPO triplets in the visual imagery.
+            </para>
+
+           <para>
+           <link xlink:href="https://github.com/nbatfai/judah">Ram</link> "The son of Hezron is Ram." The project called Ram allows to experiment with different deep Q learning algorithms to express feelings when he is talking.
+            </para>        
+           <para>
+<link xlink:href="https://github.com/nbatfai/judah">Amminadab</link> "The son of Ram is Amminadab." In project called Amminadab we can significantly improve Samu's learning by using the Liv-Zempel-Welch dictionary tree to narrow the scope of selecting Q-actions.
+            </para>    
+                <para>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="0.jpg"/>
+          </imageobject>
+          <textobject>
+            <phrase></phrase>
+          </textobject>
+        </mediaobject>
+      </para>     
+    </section>
+  </chapter>
+   <chapter>
+    <info>
+            <title>Our Project</title>
+    </info>
+    <section>
+      <title>Slower Answers from Amminadab</title>
+       <subtitle> Steps and feautures </subtitle>
+     <para>
+      At the beginning of the project we worked with user interface lines , colours , backgrounds and margins. 
+      </para> 
+      <para>
+      Then we started to create a new window and new sizes for Samu's slower answers block. 
+      </para>
+      <para>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="4.jpg"/>
+          </imageobject>
+          <textobject>
+            <phrase></phrase>
+          </textobject>
+        </mediaobject>
+      </para>   
+        <para>
+       Our solution give Samu a new skill . Samu asnwers speed  was very fast and we give a new feature,  and with it Samu can answer slower , so we can easly read it . We made a file buffer sytem for this feature. We write the answers into text files , and from text files we write all answers to the new window. 
+      </para>      
+    </section>
+  </chapter>
+  <chapter>
+    <info>
+      <title>Installation of the Samu Project</title>
+    </info>
+         <section>
+            <title>How to intsall one member of Samu's Family on Linix Platform ?</title>
+            <para>
+                   Most important packages for your own Linux System: 
+            </para>
+            <para>
+        1, sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        </para>
+        <para>
+        2, sudo apt-get update
+         </para>
+         <para>
+	3, sudo update-alternatives --remove-all gcc 
+	 </para>
+	 <para>
+	4, sudo update-alternatives --remove-all g++
+	 </para>
+	 <para>
+	5, sudo apt-get install gcc-4.8
+	 </para>
+	 <para>
+	6, sudo apt-get install g++-4.8
+	 </para>
+	 <para>
+	7, sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20
+	 </para>
+	 <para>
+	8, sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
+	 </para>
+	 <para>
+	9, sudo update-alternatives --config gcc
+	 </para>
+	 <para>
+	10,sudo update-alternatives --config g++
+	 </para>
+	 <para>
+	11,sudo apt-get update
+	 </para>
+	 <para>
+	12,sudo apt-get upgrade -y
+	 </para>
+	 <para>
+	13,sudo apt-get dist-upgrade 
+	 </para> 
+	 <para>
+        14,sudo apt-get install libboost-all-dev  
+         </para>
+         <para>
+        15,sudo apt-get install libncurses5-dev
+            </para>
+            <para>
+	16, wget http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.gz
+	 </para>
+	  <para>
+	17, tar xvzf freetype-2.6.tar.gz 
+	 </para>
+	  <para>
+	18, cd freetype-2.6
+	 </para>
+	  <para>
+	19, ./configure
+	 </para>
+	  <para>
+	20, make
+	 </para>
+	  <para>
+	21, sudo make install
+ 	  </para>
+	 <para>
+	22,  Go back to the home folder 
+	</para>
+	 <para> 
+	23, sudo apt-get install cmake file cmake-curses-gui
+	</para>
+	<para>
+	24, sudo apt-get install libopenmpi-dev
+	</para>
+	 <para>
+	25, sudo apt-get install zlib1g-dev
+	</para>
+	 <para>
+	26, sudo apt-get install libboost-program-options-dev libboost-regex-dev libboost-filesystem-dev libboost-system-dev
+	</para>
+	 <para>
+	27, sudo apt-get install git
+	</para>
+	 <para>
+	28, sudo apt-get install libpng-dev
+	</para>
+	 <para>
+	29, mkdir -p ~/src ~/build ~/lib
+	</para>
+	 <para>
+	30, git clone https://github.com/pngwriter/pngwriter.git ~/src/pngwriter/
+	</para>
+	 <para>
+	31, cd ~/build
+	 </para>
+	  <para>
+	32, cmake -DCMAKE_INSTALL_PREFIX=~/lib/pngwriter ~/src/pngwriter
+	</para>
+	 <para>
+	33, make install
+	 </para>
+	  <para>
+	34, export PNGWRITER_ROOT=$HOME/lib/pngwriter
+	</para>
+	 <para>
+	35, sudo gedit /etc/bash.bashrc    and put it in the end of the file :  export PNGWRITER_ROOT=$HOME/lib/pngwriter
+	</para>
+	 <para>
+	36,   Go back to the home folder 
+	</para>
+	 <para>
+	37, wget http://www.abisource.com/downloads/link-grammar/5.2.5/link-grammar-5.2.5.tar.gz
+	</para>
+	 <para>
+	38, tar xvzf link-grammar-5.2.5.tar.gz 
+	</para>
+	 <para>
+	39, cd link-grammar-5.2.5/
+	</para>
+	 <para>
+	40, ./configure
+	</para>
+	 <para>
+	41, make
+	</para>
+	 <para>
+	42, sudo make install    
+        </para>
+        </section>
+        <section>
+      <title>First Steps With Samu's Family ( This is example is the main Samu)</title>
+         <para>
+         This is a very useful video for the first steps with this main Project :<link xlink:href="https://youtu.be/qAhxVQk-dvY">https://youtu.be/qAhxVQk-dvY</link>
+          </para>
+         <para>
+        41, git clone https://github.com/nbatfai/samu.git
+          </para>
+        <para>
+          42, cd samu/
+        </para>
+         <para>
+         43, cmake .
+       </para>
+       <para>
+         44, make
+       </para>
+         <para>
+         45, ./samu 2>out  
+       </para>
+             <para>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="1.jpg"/>
+          </imageobject>
+          <textobject>
+            <phrase></phrase>
+          </textobject>
+        </mediaobject>
+      </para>
+            <para>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="3.jpg"/>
+          </imageobject>
+          <textobject>
+            <phrase></phrase>
+          </textobject>
+        </mediaobject>
+      </para>
+          </section>
+  </chapter>
+</book>
